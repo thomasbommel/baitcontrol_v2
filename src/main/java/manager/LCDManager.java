@@ -52,6 +52,7 @@ public class LCDManager {
 			try {
 				instance = new LCDManager();
 			} catch (LCDInitialisationFailedException e) {
+				System.out.println(e.getMessage());
 				LOGGER.severe(e.getMessage());
 			}
 		}

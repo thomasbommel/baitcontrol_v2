@@ -16,14 +16,16 @@ public class LCDController implements Runnable {
 	@Override
 	public void run() {
 		LOGGER.info("LCDController started");
+		
 		while (continueLoop) {
 			LCDManager.getInstance().printLineToLCD(firstLine, 0);
 			LCDManager.getInstance().printLineToLCD(secondLine, 1);
  
 			try {
-				Thread.sleep(200);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				LOGGER.warning(e.getMessage());
+				System.out.println(e.getMessage());
 			}
 		}
 	}

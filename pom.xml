@@ -35,6 +35,29 @@
 			<version>2.2.0</version>
 		</dependency>
 		<!-- ==================================== -->
+
+		<!-- for parsing the nmea data -->
+		<!-- https://mvnrepository.com/artifact/net.sf.marineapi/marineapi -->
+		<dependency>
+			<groupId>net.sf.marineapi</groupId>
+			<artifactId>marineapi</artifactId>
+			<version>0.10.0</version>
+		</dependency>
+		<!-- ==================================== -->
+
+		<!-- for the NumberUtils -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.6</version>
+		</dependency>
+		<!-- ==================================== -->
+
+
+
+
+
+
 	</dependencies>
 
 </project>
