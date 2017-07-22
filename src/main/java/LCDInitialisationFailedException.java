@@ -1,4 +1,4 @@
-package exceptions;
+
 
 public class LCDInitialisationFailedException extends Exception {
 

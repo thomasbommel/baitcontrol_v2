@@ -1,4 +1,4 @@
-package utils;
+
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -6,9 +6,8 @@ import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 import java.util.logging.Logger;
-
-import exceptions.TooLowSpeedException;
 
 public class Utils {
 	private static final Logger LOGGER = Logger.getLogger(Utils.class.getName());
@@ -35,11 +34,13 @@ public class Utils {
 
 	public static String dateToString(Date date) {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+		dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+2"));
 		return dateFormat.format(date);
 	}
 
 	public static String dateToTimeString(Date date) {
 		DateFormat dateFormat = new SimpleDateFormat("HH-mm-ss");
+		dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+2"));
 		return dateFormat.format(date);
 	}
 

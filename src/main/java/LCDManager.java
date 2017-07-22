@@ -1,10 +1,8 @@
-package manager;
+
 
 import java.util.logging.Logger;
 
 import com.pi4j.wiringpi.Lcd;
-
-import exceptions.LCDInitialisationFailedException;
 
 public class LCDManager {
 	private static final Logger LOGGER = Logger.getLogger(LCDManager.class.getName());
@@ -37,11 +35,11 @@ public class LCDManager {
 		}
 		Lcd.lcdClear(lcdHandle);
 		Lcd.lcdPosition(lcdHandle, 0, 0);
-		Lcd.lcdPuts(lcdHandle, "   >> v0.1 <<");
+		Lcd.lcdPuts(lcdHandle, "   >> v0.4 <<");
 		Lcd.lcdPosition(lcdHandle, 0, 1);
 		Lcd.lcdPuts(lcdHandle, "by Thomas");
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(100);
 		} catch (InterruptedException e) {
 			LOGGER.warning(e.getMessage());
 		}
