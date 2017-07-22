@@ -11,12 +11,9 @@ public class LCDController implements Runnable {
 	private static LCDController instance;
 	private static boolean continueLoop = true;
 
-	// private String firstLine = "";
-	// private String secondLine = "";
-
 	@Override
 	public void run() {
-		System.out.println("dropcontroller thread started");
+		System.out.println("lcdcontroller thread started");
 
 		while (continueLoop) {
 
@@ -54,6 +51,10 @@ public class LCDController implements Runnable {
 		}
 	}
 
+	private LCDController() {
+		//prevent usage
+	}
+	
 	public static LCDController getInstance() {
 		if (instance == null) {
 			instance = new LCDController();
@@ -70,12 +71,6 @@ public class LCDController implements Runnable {
 		LCDManager.getInstance().printLineToLCD(text, line);
 	}
 
-	// public void setFirstLine(String firstLine) {
-	// this.firstLine = firstLine;
-	// }
-	//
-	// public void setSecondLine(String secondLine) {
-	// this.secondLine = secondLine;
-	// }
+
 
 }

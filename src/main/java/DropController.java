@@ -20,6 +20,10 @@ public class DropController implements Runnable {
 	private static Date firstDrop;
 	private TPVObject lastGPSObject;
 	private TPVObject lastDropObject;
+	
+	private DropController(){
+		//prevent usage;
+	}
 
 	public static DropController getInstance() {
 		if (instance == null) {
@@ -43,24 +47,15 @@ public class DropController implements Runnable {
 				long delay = getDelayForKMH(lastGPSObject.getSpeed() * 3.6);
 				String delayString = Utils.numberToString(delay);
 
-				try {
-					relaisController.enableRelais();
-					LOGGER.info("relais enabled");
-					Thread.sleep((long) (SECONDS_TO_DROP * 1000l));
-				} catch (Exception e) {
-					System.out.println("ERROR: " + e.getMessage());
-				}finally {
-					relaisController.disableRelais();
-					LOGGER.info("relais disabled");
-				}
+				DropTask dropTask = DropTask.getInstance();
+				Thread dropTaskThread = new Thread(dropTask);
+				dropTaskThread.start(); 
 			
 				Utils.addToTxt("drop_" + Utils.dateToTimeString(firstDrop),
 						dropDate + " " + latitude + " " + longitude + " " + speed + " " + delayString);
-
 				try {
-					long delayTimeIncludingDrop = (long) Math.max(50l,(long)(delay-(long)(SECONDS_TO_DROP*1000.0)));
-					Thread.sleep(delayTimeIncludingDrop);
-					System.out.println("current Delay: " + Utils.numberToString(delayTimeIncludingDrop, 10, 3) + "ms at speed: " + Utils.numberToString(lastDropObject.getSpeed()*3.6,8, 2) + "km/h");
+					Thread.sleep(delay);
+					System.out.println("current Delay: " + Utils.numberToString(delay, 10, 3) + "ms at speed: " + Utils.numberToString(lastDropObject.getSpeed()*3.6,8, 2) + "km/h");
 				} catch (InterruptedException e) {
 					LOGGER.warning("DropController Thread interrupted " + e.getMessage());
 				}
@@ -90,6 +85,10 @@ public class DropController implements Runnable {
 	
 	public TPVObject getLastDropObject() {
 		return lastDropObject;
+	}
+	
+	public RelaisController getRelaisController() {
+		return relaisController;
 	}
 
 }

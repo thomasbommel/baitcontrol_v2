@@ -44,7 +44,7 @@ public class LCDManager {
 			LOGGER.warning(e.getMessage());
 		}
 	}
-
+	
 	public static LCDManager getInstance() {
 		if (instance == null) {
 			try {
