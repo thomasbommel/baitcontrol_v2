@@ -1,5 +1,5 @@
 
-
+import java.util.Date;
 import java.util.logging.Logger;
 
 import com.pi4j.io.gpio.GpioController;
@@ -25,10 +25,10 @@ public class GPSController {
 
 	private static DropController dropController;
 	private static LCDController lcdController;
-	private static GpioController gpioController; 
+	private static GpioController gpioController;
 
 	private GPSController() {
-		//prevent usage
+		// prevent usage
 	}
 
 	/**
@@ -37,9 +37,21 @@ public class GPSController {
 	 */
 	public static void main(final String[] args) {
 		initGPIO();
-		
+
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			@Override
+			public void run() {
+				System.out.println("\n\nPROGRAM WAS INTERRUPTED. SHUTTING " + "DOWN!");
+				log.warning("\nPROGRAM WAS INTERRUPTED. SHUTTING " + "DOWN!");
+				Utils.addToTxt("interrupted_" + Utils.dateToTimeString(new Date()),"\nPROGRAM WAS INTERRUPTED. SHUTTING " + "DOWN!");
+				gpioController.shutdown();
+			}
+		});
+
 		try {
 			final GPSdEndpoint ep = new GPSdEndpoint(HOST, PORT, new ResultParser());
+			
+	
 			dropController = DropController.getInstance();
 			lcdController = LCDController.getInstance();
 
@@ -56,14 +68,12 @@ public class GPSController {
 			ep.start();
 			ep.watch(true, true); // never remove me !!!
 
-			
 			Thread dropControllerThread = new Thread(dropController);
 			Thread lcdControllerThread = new Thread(lcdController);
 
-			
 			lcdControllerThread.start();
 			dropControllerThread.start();
-			
+
 			Thread.sleep(10000000000l);
 		} catch (final Exception e) {
 			log.severe("Problem encountered: " + e.getMessage());
@@ -89,13 +99,13 @@ public class GPSController {
 			System.exit(1);
 		}
 	}
-	
+
 	public static DropController getDropController() {
 		return dropController;
 	}
-	
+
 	public static GpioController getGpioController() {
-		if(gpioController == null){
+		if (gpioController == null) {
 			System.out.println(">>>>> GPIO CONTROLLER IS NULL <<<<");
 		}
 		return gpioController;

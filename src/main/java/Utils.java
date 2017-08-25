@@ -39,7 +39,7 @@ public class Utils {
 	}
 
 	public static String dateToTimeString(Date date) {
-		DateFormat dateFormat = new SimpleDateFormat("HH-mm-ss");
+		DateFormat dateFormat = new SimpleDateFormat("mm-ss-SSS");
 		dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+2"));
 		return dateFormat.format(date);
 	}
