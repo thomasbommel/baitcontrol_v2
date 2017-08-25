@@ -21,20 +21,20 @@ public class LCDController implements Runnable {
 			TPVObject lastDropObject = GPSController.getDropController().getLastDropObject();
 			if (lastUpdateObject != null) {
 				try {
-					String speed = Utils.numberToString(GPSController.getDropController().getLastGPSObject().getSpeed(),
+					String speed = Utils.numberToString(GPSController.getDropController().getLastGPSObject().getSpeed()*3.6,
 							6, 1);
 					
 					String delay = Utils.numberToString(GPSController.getDropController().getDelayForKMH(GPSController.getDropController().getLastGPSObject().getSpeed()*3.6),
 							6, 0);
 
-					LCDManager.getInstance().printLineToLCD(speed+" "+delay, 0);
+					LCDHandler.getInstance().printLineToLCD(speed+" "+delay, 0);
 
 					if (lastDropObject != null) {
 						String lastgps = Utils.dateToTimeString(new Date(
 								(long) (GPSController.getDropController().getLastGPSObject().getTimestamp() * 1000)));
 						String lastdrop = Utils.dateToTimeString(new Date(
 								(long) (GPSController.getDropController().getLastDropObject().getTimestamp() * 1000)));
-						LCDManager.getInstance().printLineToLCD(lastgps.substring(3, lastgps.length()) + "   " + lastdrop.substring(3, lastdrop.length()), 1);
+						LCDHandler.getInstance().printLineToLCD(lastgps.substring(3, lastgps.length()) + " " + Utils.dateToTimeString(new Date((long)lastDropObject.getTimestamp()*1000l)),1);
 					}
 
 				} catch (Exception e) {
@@ -64,11 +64,11 @@ public class LCDController implements Runnable {
 	}
 
 	public void clearLCD() {
-		LCDManager.getInstance().clearLCD();
+		LCDHandler.getInstance().clearLCD();
 	}
 
 	public void printLineToLCD(String text, int line) {
-		LCDManager.getInstance().printLineToLCD(text, line);
+		LCDHandler.getInstance().printLineToLCD(text, line);
 	}
 
 

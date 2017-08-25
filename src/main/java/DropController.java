@@ -33,6 +33,9 @@ public class DropController implements Runnable {
 		return instance;
 	}
 
+	/**
+	 * this method starts the droptasks
+	 */
 	public void run() {
 		System.out.println("dropcontroller thread started");
 		relaisController = RelaisController.getInstance(GPSController.getGpioController());
@@ -40,22 +43,14 @@ public class DropController implements Runnable {
 		while (continueLoop) {
 			if (lastGPSObject != null && !Double.isNaN(lastGPSObject.getLatitude()) && !Double.isNaN(lastGPSObject.getLongitude()) && !Double.isNaN(lastGPSObject.getSpeed())    ) {
 				lastDropObject = lastGPSObject;
-				String dropDate = Utils.dateToTimeString(new Date((long) (lastGPSObject.getTimestamp() * 1000)));
-				String latitude = Utils.numberToString(lastGPSObject.getLatitude());
-				String longitude = Utils.numberToString(lastGPSObject.getLongitude());
-				String speed = Utils.numberToString(lastGPSObject.getSpeed() * 3.6);
+				
 				long delay = getDelayForKMH(lastGPSObject.getSpeed() * 3.6);
-				String delayString = Utils.numberToString(delay);
 
-				DropTask dropTask = DropTask.getInstance();
-				Thread dropTaskThread = new Thread(dropTask);
-				dropTaskThread.start(); 
-			
-				Utils.addToTxt("drop_" + Utils.dateToTimeString(firstDrop),
-						dropDate + " " + latitude + " " + longitude + " " + speed + " " + delayString);
+				MotorController.getInstance().startMotor();
+				
 				try {
 					Thread.sleep(delay);
-					System.out.println("current Delay: " + Utils.numberToString(delay, 10, 3) + "ms at speed: " + Utils.numberToString(lastDropObject.getSpeed()*3.6,8, 2) + "km/h");
+					System.out.println("drop... current Delay: " + Utils.numberToString(delay, 10, 3) + "ms at speed: " + Utils.numberToString(lastDropObject.getSpeed()*3.6,8, 2) + "km/h");
 				} catch (InterruptedException e) {
 					LOGGER.warning("DropController Thread interrupted " + e.getMessage());
 				}
@@ -89,6 +84,10 @@ public class DropController implements Runnable {
 	
 	public RelaisController getRelaisController() {
 		return relaisController;
+	}
+	
+	public static Date getFirstDrop() {
+		return firstDrop;
 	}
 
 }

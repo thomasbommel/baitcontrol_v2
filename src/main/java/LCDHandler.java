@@ -1,20 +1,22 @@
 
 
+import java.util.Date;
 import java.util.logging.Logger;
 
 import com.pi4j.wiringpi.Lcd;
 
-public class LCDManager {
-	private static final Logger LOGGER = Logger.getLogger(LCDManager.class.getName());
+public class LCDHandler {
+	private static final Logger LOGGER = Logger.getLogger(LCDHandler.class.getName());
 
 	private static final int LCD_ROWS = 2;
 	private static final int LCD_COLUMNS = 16;
 	private static final int LCD_BITS = 4;
 
 	private int lcdHandle;
-	private static LCDManager instance;
+	private static LCDHandler instance;
 
-	private LCDManager() throws LCDInitialisationFailedException {
+	private LCDHandler() throws LCDInitialisationFailedException {
+		Date startlcd = new Date();
 		this.lcdHandle = Lcd.lcdInit(LCD_ROWS, // number of row supported by LCD
 				LCD_COLUMNS, // number of columns supported by LCD
 				LCD_BITS, // number of bits used to communicate to LCD
@@ -38,17 +40,20 @@ public class LCDManager {
 		Lcd.lcdPuts(lcdHandle, "   >> v0.4 <<");
 		Lcd.lcdPosition(lcdHandle, 0, 1);
 		Lcd.lcdPuts(lcdHandle, "by Thomas");
+		Date lcdStarted = new Date();
+		Lcd.lcdPosition(lcdHandle, 0, 1);
+		Lcd.lcdPuts(lcdHandle,""+ (lcdStarted.getTime()-startlcd.getTime()));
 		try {
-			Thread.sleep(100);
+			Thread.sleep(10000);
 		} catch (InterruptedException e) {
 			LOGGER.warning(e.getMessage());
 		}
 	}
 	
-	public static LCDManager getInstance() {
+	public static LCDHandler getInstance() {
 		if (instance == null) {
 			try {
-				instance = new LCDManager();
+				instance = new LCDHandler();
 			} catch (LCDInitialisationFailedException e) {
 				System.out.println(e.getMessage());
 				LOGGER.severe(e.getMessage());
@@ -65,7 +70,7 @@ public class LCDManager {
 		Lcd.lcdClear(this.lcdHandle);
 	}
 
-	public void printLineToLCD(String text, int line) {
+	public synchronized void printLineToLCD(String text, int line) {
 		if (text.length() > 16) {
 			LOGGER.info("text:" + text + " " + (text.length() - 16) + " characters too long");
 		}

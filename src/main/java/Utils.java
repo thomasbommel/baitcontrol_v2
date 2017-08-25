@@ -14,7 +14,9 @@ public class Utils {
 	public static final int NUMBER_LENGTH = 25, DECIMALPLACES = 12, STRINGLENGTH = 30;
 	public static final String ENDING = "; ";
 	
-	private static final String desktopPath = "/home/pi/Desktop/";
+	//private static final String desktopPath = "/home/pi/Desktop/";
+	private static final String desktopPath = "/media/pi/9016-4EF8/";
+
 
 	public static String stringWithFixedLength(String s, int length) {
 		return String.format("%1$" + length + "s", s);
@@ -33,13 +35,13 @@ public class Utils {
 	}
 
 	public static String dateToString(Date date) {
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+		DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
 		dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+2"));
 		return dateFormat.format(date);
 	}
 
 	public static String dateToTimeString(Date date) {
-		DateFormat dateFormat = new SimpleDateFormat("mm-ss-SSS");
+		DateFormat dateFormat = new SimpleDateFormat("mm_ss_SSS");
 		dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+2"));
 		return dateFormat.format(date);
 	}

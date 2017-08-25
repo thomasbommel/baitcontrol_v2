@@ -24,11 +24,11 @@ public class RelaisController {
 		return instance;
 	}
 
-	public void enableRelais() {
+	public synchronized void enableRelais() {
 		this.pin.low();
 	}
 
-	public void disableRelais() {
+	public synchronized void disableRelais() {
 		this.pin.high();
 	}
 }
